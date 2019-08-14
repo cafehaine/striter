@@ -29,12 +29,17 @@ function m.new(arg)
 	return self
 end
 
---- Advance a character in the iterator
+--- Advance characters in the iterator
 -- @function striter:next
--- @treturn string|nil the next character
-function m:next()
-	self.__index = self.__index + 1
-	local value = self.__string:sub(self.__index, self.__index)
+-- @tparam[opt] int n the characters to advance (default is 1)
+-- @treturn string|nil the next characters
+function m:next(n)
+	if n == nil then
+		n = 1
+	end
+
+	local value = self.__string:sub(self.__index + 1, self.__index + n)
+	self.__index = self.__index + n
 	return #value ~= 0 and value or nil
 end
 
