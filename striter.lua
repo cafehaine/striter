@@ -71,7 +71,6 @@ function m:next_pattern(pattern)
 end
 
 function m:next_line(keepnewline)
-	--TODO handle keepnewline
 	local result = self:next_pattern("\r?\n")
 	if not result then
 		local to_end = self.__string:sub(self.__index+1)
@@ -81,9 +80,11 @@ function m:next_line(keepnewline)
 		else
 			return to_end
 		end
+		return result
+	elseif not keepnewline then
+		return result:match("^(.*)\r?\n$")
 	end
 	return result
-
 end
 
 --- Peek the next characters up to and including the specified pattern
@@ -104,7 +105,6 @@ end
 -- @tparam[opt] bool keepnewline keep the newline characters (default is false)
 -- @treturn string|nil the peeked characters
 function m:peek_line(keepnewline)
-	--TODO handle keepnewline
 	local result = self:peek_pattern("\r?\n")
 	if not result then
 		local to_end = self.__string:sub(self.__index+1)
@@ -113,6 +113,9 @@ function m:peek_line(keepnewline)
 		else
 			return to_end
 		end
+		return result
+	elseif not keepnewline then
+		return result:match("^(.*)\r?\n$")
 	end
 	return result
 end
